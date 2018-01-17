@@ -1,4 +1,4 @@
-node ('jenkins_slave2')
+node ('jenkins_slave3')
 {	
 	
 	def artideploy = Artifactory.newServer url: 'http://localhost:8081/artifactory', username: 'admin', password: 'admin'
