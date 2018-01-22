@@ -1,37 +1,113 @@
-node
-{	
-	
-	def artideploy = Artifactory.newServer url: 'http://localhost:8081/artifactory', username: 'admin', password: 'admin'
-	def artirepo = Artifactory.newServer url: 'http://artifactory.dev.securegion.com/artifactory', username: 'shmuelm', password: 'Aa123456'
-	def rtMaven = Artifactory.newMavenBuild()
-	def buildInfo
-	rtMaven.tool = 'mvn'
-	
-		stage('artifactory_configuration')
-		{	
-			rtMaven.resolver server: artirepo, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-			rtMaven.deployer server: artideploy, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
-			rtMaven.deployer.deployArtifacts = false
-		
-		}
-	
-	
-		stage('Build')
-		{ 
-			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
-			
-		}
-		
-		
-		stage('deployToArtifactory')
-		{
-			artideploy.publishBuildInfo buildInfo
-	
-		}
-		
-		stage('deployToDev')
-		{
-		 sh "sshpass -p 'lc223lc221' scp /workspace/github/target/project-1.1.jar mordechai@192.168.146.1:C:/jenkinsfile_deploy"
-		}
-	
+pipeline
+{
+                     
+
+    agent any
+
+    tools {
+
+        maven 'mvn'
+
+        jdk 'jdk'
+
+    }
+
+ 
+
+            stage ('Initialize') {
+
+                        steps {
+
+                                    sh '''
+
+                                                echo "PATH = ${PATH}"
+
+                                                echo "M2_HOME = ${M2_HOME}"
+
+                                    '''
+
+                        }
+
+            }
+
+/*
+
+            stage ('Artifactory configuration') {
+
+                        env.JAVA_HOME = "${tool 'jdk'}"
+
+                        artiStore = Artifactory.server 'artiStore'
+
+                        rtMaven = Artifactory.newMavenBuild()
+
+                        rtMaven.tool = 'mvn'
+
+                        rtMaven.deployer releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: artiStore
+
+                        rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: artiProxy
+
+                        rtMaven.deployer.deployArtifacts = false // Disable artifacts deployment during Maven run
+
+                        buildInfo = Artifactory.newBuildInfo()
+
+            }
+
+ 
+
+            stage ('Install') {
+
+                        rtMaven.run pom: 'pom.xml', goals: "install -Djavax.net.ssl.trustStore=/var/jenkins_home/apcprpproxy.jks -Djavax.net.ssl.trustPassword='apcprxy2017J&4Fr'", buildInfo: buildInfo
+
+            }
+
+ 
+
+            stage ('Deploy') {
+
+                        rtMaven.deployer.deployArtifacts buildInfo
+
+            }
+
+ 
+
+            stage ('Publish build info') {
+
+                        artiStore.publishBuildInfo buildInfo
+
+            }
+
+ 
+
+*/ 
+
+            stage ('Build') {
+
+                        steps {
+
+                                    sh "mvn clean install -Djavax.net.ssl.trustStore=/var/jenkins_home/apcprpproxy.jks -Djavax.net.ssl.trustPassword='apcprxy2017J&4Fr'"
+
+                        }
+
+            }
+
+        
+
+            stage ('deployToDev') {
+
+                           sh "ssh shmuelm@192.22.10.36 net stop springboot"
+
+                           sh "scp /root/.m2/repository/il/co/boj/springboot/1.0/springboot-1.0.jar shmuelm@192.22.10.36:D:/JenkinsFile"
+
+                           sh "ssh shmuelm@192.22.10.36 net start springboot"
+
+                                    //sh "mvn clean install -X"
+
+                                    //sh "mvn clean install -Djavax.net.ssl.trustStore=/var/jenkins_home/apcprpproxy.jks -Djavax.net.ssl.trustPassword='apcprxy2017J&4Fr'"
+
+                        }
+*/
+           
+
+                       
+
 }
