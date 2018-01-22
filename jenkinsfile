@@ -1,15 +1,8 @@
-pipeline
+node
 {
-                     
+      env.JAVA_HOME = "${tool 'jdk'}"
+	  env.maven = "${tool 'mvn'}"
 
- agent any
-    tools {
-
-        maven 'mvn'
-
-        jdk 'jdk'
-
-    }
 
  stages
  {
@@ -58,7 +51,7 @@ pipeline
 
                         rtMaven.run pom: 'pom.xml', goals: "install -Djavax.net.ssl.trustStore=/var/jenkins_home/apcprpproxy.jks -Djavax.net.ssl.trustPassword='apcprxy2017J&4Fr'", buildInfo: buildInfo
 
-            }
+            }errr
 
  
 
