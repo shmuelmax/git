@@ -73,11 +73,11 @@ node
 
             stage ('Build') {
 
-                        steps {
+                       
 
                                     sh "mvn clean install -Djavax.net.ssl.trustStore=/var/jenkins_home/apcprpproxy.jks -Djavax.net.ssl.trustPassword='apcprxy2017J&4Fr'"
 
-                        }
+                        
 
             }
 
