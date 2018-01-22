@@ -91,7 +91,7 @@ pipeline
             }
 
         
-
+/*
             stage ('deployToDev') {
 
                            sh "ssh shmuelm@192.22.10.36 net stop springboot"
