@@ -7,7 +7,7 @@ node
 
             stage ('Initialize') {
 
-                        steps {
+                        
 
                                     sh '''
 
@@ -17,7 +17,7 @@ node
 
                                     '''
 
-                        }
+                        
 
             }
 
@@ -101,4 +101,4 @@ node
 
                        
 
-}
+}z
