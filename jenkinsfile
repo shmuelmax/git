@@ -4,8 +4,6 @@ node
 	  env.maven = "${tool 'mvn'}"
 
 
- stages
- {
 
             stage ('Initialize') {
 
@@ -101,6 +99,6 @@ node
 */
            
 
-  }                     
+                       
 
 }
