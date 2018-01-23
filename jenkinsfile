@@ -1,3 +1,4 @@
+pipeline{
 node
 {
       env.JAVA_HOME = "${tool 'jdk'}"
@@ -100,5 +101,5 @@ node
            
 
                        
-
-}z
+}
+}
