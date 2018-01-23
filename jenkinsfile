@@ -11,11 +11,12 @@ pipeline {
 				def artirepo = Artifactory.newServer url: 'http://artifactory.dev.securegion.com/artifactory', username: 'shmuelm', password: 'Aa123456'
 				def rtMaven = Artifactory.newMavenBuild()
 				def buildInfo
+				rtMaven.resolver server: artirepo, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+				rtMaven.deployer server: artideploy, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+				rtMaven.deployer.deployArtifacts = false
                 
                     }
-			rtMaven.resolver server: artirepo, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-			rtMaven.deployer server: artideploy, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
-			rtMaven.deployer.deployArtifacts = false
+			
                 }
             }
         stage('Build')
