@@ -14,6 +14,7 @@ pipeline {
 				rtMaven.resolver server: artirepo, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
 				rtMaven.deployer server: artideploy, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 				rtMaven.deployer.deployArtifacts = false
+				buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
                 
                     }
 			
@@ -21,7 +22,7 @@ pipeline {
             }
         stage('Build')
 		{ 
-			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
+			
 			
 		}
 		
