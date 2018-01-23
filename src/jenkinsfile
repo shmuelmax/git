@@ -1,0 +1,104 @@
+pipeline{
+
+      env.JAVA_HOME = "${tool 'jdk'}"
+	  env.maven = "${tool 'mvn'}"
+	  env.rtMaven = Artifactory.newMavenBuild
+
+
+
+            stage ('Initialize') {
+
+                        
+
+                                    sh '''
+
+                                                echo "PATH = ${PATH}"
+
+                                                echo "M2_HOME = ${M2_HOME}"
+
+                                    '''
+
+                        
+
+            }
+
+/*
+
+            stage ('Artifactory configuration') {
+
+                        env.JAVA_HOME = "${tool 'jdk'}"
+
+                        artiStore = Artifactory.server 'artiStore'
+
+                        rtMaven = Artifactory.newMavenBuild()
+
+                        rtMaven.tool = 'mvn'
+
+                        rtMaven.deployer releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: artiStore
+
+                        rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: artiProxy
+
+                        rtMaven.deployer.deployArtifacts = false // Disable artifacts deployment during Maven run
+
+                        buildInfo = Artifactory.newBuildInfo()
+
+            }
+
+ 
+
+            stage ('Install') {
+
+                        rtMaven.run pom: 'pom.xml', goals: "install -Djavax.net.ssl.trustStore=/var/jenkins_home/apcprpproxy.jks -Djavax.net.ssl.trustPassword='apcprxy2017J&4Fr'", buildInfo: buildInfo
+
+            }
+
+ 
+
+            stage ('Deploy') {
+
+                        rtMaven.deployer.deployArtifacts buildInfo
+
+            }
+
+ 
+
+            stage ('Publish build info') {
+
+                        artiStore.publishBuildInfo buildInfo
+
+            }
+
+ 
+
+*/ 
+
+            stage ('Build') {
+
+                       
+
+                                    sh "mvn clean install -Djavax.net.ssl.trustStore=/var/jenkins_home/apcprpproxy.jks -Djavax.net.ssl.trustPassword='apcprxy2017J&4Fr'"
+
+                        
+
+            }
+
+        
+/*
+            stage ('deployToDev') {
+
+                           sh "ssh shmuelm@192.22.10.36 net stop springboot"
+
+                           sh "scp /root/.m2/repository/il/co/boj/springboot/1.0/springboot-1.0.jar shmuelm@192.22.10.36:D:/JenkinsFile"
+
+                           sh "ssh shmuelm@192.22.10.36 net start springboot"
+
+                                    //sh "mvn clean install -X"
+
+                                    //sh "mvn clean install -Djavax.net.ssl.trustStore=/var/jenkins_home/apcprpproxy.jks -Djavax.net.ssl.trustPassword='apcprxy2017J&4Fr'"
+
+                        }
+*/
+           
+
+                       
+}
