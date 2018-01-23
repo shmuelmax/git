@@ -15,6 +15,10 @@ pipeline {
 				rtMaven.deployer server: artideploy, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 				rtMaven.deployer.deployArtifacts = false
 				buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
+				artideploy.publishBuildInfo buildInfo
+				sh "scp /workspace/github/target/project-1.1.jar mordechai@192.168.146.1:C:/jenkinsfile_deploy"
+
+
                 
                     }
 			
@@ -29,13 +33,11 @@ pipeline {
 		
 		stage('deployToArtifactory')
 		{
-			artideploy.publishBuildInfo buildInfo
 	
 		}
 		
 		stage('deployToDev')
 		{
-		 sh "scp /workspace/github/target/project-1.1.jar mordechai@192.168.146.1:C:/jenkinsfile_deploy"
 		}
 		}
 		
