@@ -6,8 +6,9 @@ pipeline
 		
 		stage('artifactory_configuration')
 		{	
-			step
+			steps
 			{
+			step{
 				script
 				{
 				def artideploy = Artifactory.newServer url: 'http://localhost:8081/artifactory', username: 'admin', password: 'admin'
@@ -16,6 +17,7 @@ pipeline
 				def buildInfo
 				rtMaven.tool = 'mvn'
 				}
+			}
 			}
 			rtMaven.resolver server: artirepo, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
 			rtMaven.deployer server: artideploy, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
